@@ -51,6 +51,9 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 # Authentication
 gem 'devise'
 
+# Roles
+gem 'rolify'
+
 # grape API
 gem 'grape'
 gem 'rack-cors', :require => 'rack/cors'
