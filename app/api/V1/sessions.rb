@@ -18,6 +18,7 @@ module V1
       end
 
       post do
+        puts params.inspect
         email = params[:email]
         password = params[:password]
 
@@ -33,7 +34,7 @@ module V1
         end
 
         u_token = user.login!
-        serialization = UserSerializer.new(user, {show_token: true, token: u_token.token})
+        serialization = UserSerializer.new(user, { show_token: true, token: u_token.token })
 
         render_success(serialization.as_json)
       end

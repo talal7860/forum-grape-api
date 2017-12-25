@@ -31,7 +31,7 @@ module V1Base
       end
 
       def render_error(code, message, debug_info = '')
-        error!({meta: {code: code, message: message, debug_info: debug_info}}, code)
+        error!({ meta: { code: code, message: message, debug_info: debug_info } }, code)
       end
 
       def render_success(json, extra_meta = {})
