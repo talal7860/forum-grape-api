@@ -18,7 +18,6 @@ module V1
       end
 
       post do
-        puts params.inspect
         email = params[:email]
         password = params[:password]
 

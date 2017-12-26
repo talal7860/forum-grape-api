@@ -11,6 +11,7 @@ class User < ApplicationRecord
   has_many :forums, foreign_key: :added_by_id, dependent: :destroy
   has_many :topics, foreign_key: :added_by_id, dependent: :destroy
   has_many :posts, foreign_key: :added_by_id, dependent: :destroy
+  has_many :user_tokens, dependent: :destroy
 
   ## Callbacks
   before_save do
