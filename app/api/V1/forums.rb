@@ -28,7 +28,7 @@ module V1
       get :all do
         page = (params[:page] || 1).to_i
         per_page = (params[:per_page] || PER_PAGE).to_i
-        forums = Forum.all.order("status, created_at DESC").page(page).per(per_page)
+        forums = Forum.all.order("created_at DESC").page(page).per(per_page)
         serialization = ActiveModel::Serializer::CollectionSerializer.new(forums, each_serializer: ForumSerializer)
         render_success(serialization.as_json , pagination_dict(forums))
       end

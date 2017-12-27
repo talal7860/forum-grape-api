@@ -18,10 +18,12 @@ ActiveRecord::Schema.define(version: 20171225154407) do
   create_table "forums", force: :cascade do |t|
     t.string "title"
     t.text "description"
+    t.string "slug"
     t.integer "added_by_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["added_by_id"], name: "index_forums_on_added_by_id"
+    t.index ["slug"], name: "index_forums_on_slug"
   end
 
   create_table "posts", force: :cascade do |t|
