@@ -1,5 +1,11 @@
 require 'rails_helper'
 
 RSpec.describe Forum, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+  describe '#create' do
+    it 'should create a forum without errors' do
+      expect {
+        FactoryBot::create(:forum)
+      }.to change(Forum, :count).by(1)
+    end
+  end
 end
