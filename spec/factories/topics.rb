@@ -1,6 +1,8 @@
 FactoryBot.define do
   factory :topic do
-    title "MyString"
-    added_by_id 1
+    title { Faker::Hobbit.thorins_company }
+    description { Faker::Lorem.paragraph }
+    association :added_by, factory: :user
+    association :forum, factory: :forum
   end
 end
