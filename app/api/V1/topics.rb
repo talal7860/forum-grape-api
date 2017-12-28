@@ -25,12 +25,21 @@ module V1
           params do
             optional :page, type: Integer, desc: 'page'
             optional :per_page, type: Integer, desc: 'per_page'
+            optional :q, type: String, desc: 'Query String'
           end
           get :all do
+            get_forum params[:forum_id]
             page = (params[:page] || 1).to_i
             per_page = (params[:per_page] || PER_PAGE).to_i
-            topics = Topic.all.order("created_at DESC").page(page).per(per_page)
-            serialization = ActiveModel::Serializer::CollectionSerializer.new(topics, each_serializer: TopicSerializer)
+            q = params[:q] || ""
+            if q.present?
+              topics = Topic.query(q, page, per_page, @forum.id)#.order("created_at DESC")
+              data = topics.results
+            else
+              topics = @forum.topics.page(page).per(per_page)
+              data = topics
+            end
+            serialization = ActiveModel::Serializer::CollectionSerializer.new(data, each_serializer: TopicSerializer)
             render_success(serialization.as_json , pagination_dict(topics))
           end
 
