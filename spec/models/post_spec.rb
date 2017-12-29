@@ -1,5 +1,11 @@
 require 'rails_helper'
 
 RSpec.describe Post, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+  describe '#create' do
+    it 'should create a post without errors' do
+      expect {
+        FactoryBot::create(:post)
+      }.to change(Post, :count).by(1)
+    end
+  end
 end

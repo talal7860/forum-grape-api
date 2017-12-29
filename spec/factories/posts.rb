@@ -1,6 +1,7 @@
 FactoryBot.define do
   factory :post do
-    content "MyString"
-    added_by_id 1
+    content { Faker::Lorem.paragraph }
+    association :added_by, factory: :user
+    association :topic, factory: :topic
   end
 end

@@ -2,6 +2,7 @@ module V1
   class Topics < Grape::API
     include V1Base
     include AuthenticateRequest
+    include ForumBase
     include TopicBase
 
     VALID_PARAMS = %w(title description)
