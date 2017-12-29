@@ -1,6 +1,6 @@
 # Forum Api in Rails + Grape
 
-This rails app is an example of rest api built using ([https://github.com/ruby-grape/grape] (Grape))
+This rails app is an example of rest api built using [Grape](https://github.com/ruby-grape/grape)
 
 ## Setup
 - `git clone https://github.com/talal7860/forum-grape-api`
@@ -10,7 +10,7 @@ This rails app is an example of rest api built using ([https://github.com/ruby-g
 - To add dummy data run this rake command: `rake forum_api:create_dummy_data`
 
 ## End Points
-- Run the server and all the end points can be viewed and test on [http://localhost:3000/docs/index.html] (Swagger Documentation)
+- Run the server and all the end points can be viewed and test on [Swagger Documentation](http://localhost:3000/docs/index.html)
 
 ## Front End App
-- The sample Front end App using ReactJS can be found here: [https://github.com/talal7860/forum-react-app] (Forum React App)
+- The sample Front end App using ReactJS can be found here: [Forum React App](https://github.com/talal7860/forum-react-app)
