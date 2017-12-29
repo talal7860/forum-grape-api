@@ -5,6 +5,7 @@ module V1
     mount V1::Users
     mount V1::Forums
     mount V1::Topics
+    mount V1::Posts
 
     add_swagger_documentation(
       api_version: "v1",

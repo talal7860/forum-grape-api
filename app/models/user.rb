@@ -44,6 +44,10 @@ class User < ApplicationRecord
     self.has_role? :moderator, Forum.find_by_id(forum_id)
   end
 
+  def owner?(resource)
+    resource.added_by_id == self.id
+  end
+
   private
 
   def assign_default_role

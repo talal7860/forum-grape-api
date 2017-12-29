@@ -14,7 +14,7 @@ module V1
     end
 
     namespace :forums do
-      route_param :forum_id, type: String do
+      route_param :forum_slug, type: String do
         resource :topics do
 
           desc 'Get topics', {
@@ -29,7 +29,7 @@ module V1
             optional :q, type: String, desc: 'Query String'
           end
           get :all do
-            get_forum params[:forum_id]
+            get_forum params[:forum_slug]
             page = (params[:page] || 1).to_i
             per_page = (params[:per_page] || PER_PAGE).to_i
             q = params[:q] || ""
@@ -59,7 +59,7 @@ module V1
           end
           post do
             authenticate!
-            get_forum params[:forum_id]
+            get_forum params[:forum_slug]
             custom_params = topic_params
             custom_params.merge!({forum_id: @forum.id})
             topic = current_user.topics.new(custom_params)
@@ -86,9 +86,9 @@ module V1
             requires :title, type: String, desc: 'Topic Title'
             requires :description, type: String, desc: 'Topic Description'
           end
-          put ':id' do
-            authenticate_admin!
-            get_topic params[:id]
+          put ':slug' do
+            get_topic params[:slug]
+            authenticate_topic_owner!(@topic)
             if @topic.update(topic_params)
               serialization = TopicSerializer.new(@topic)
               render_success(serialization.as_json)
@@ -109,9 +109,8 @@ module V1
               { code: RESPONSE_CODE[:not_found], message: I18n.t('errors.not_found') }
             ]
           }
-          get ':id' do
-            authenticate_admin!
-            get_topic params[:id]
+          get ':slug' do
+            get_topic params[:slug]
             serialization = TopicSerializer.new(@topic)
             render_success(serialization.as_json)
           end
@@ -125,9 +124,9 @@ module V1
               { code: RESPONSE_CODE[:not_found], message: I18n.t('errors.not_found') }
             ]
           }
-          delete ':id' do
-            authenticate_admin!
-            get_topic params[:id]
+          delete ':slug' do
+            get_topic params[:slug]
+            authenticate_topic_owner!(@topic)
             @topic.destroy
             render_success({ deleted: true })
           end
