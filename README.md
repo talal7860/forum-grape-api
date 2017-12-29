@@ -1,24 +1,16 @@
-# README
+# Forum Api in Rails + Grape
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+This rails app is an example of rest api built using ([https://github.com/ruby-grape/grape] (Grape))
 
-Things you may want to cover:
+## Setup
+- `git clone https://github.com/talal7860/forum-grape-api`
+- `bundle install`
+- `rake db:create`
+- `rake db:setup`
+- To add dummy data run this rake command: `rake forum_api:create_dummy_data`
 
-* Ruby version
+## End Points
+- Run the server and all the end points can be viewed and test on [http://localhost:3000/docs/index.html] (Swagger Documentation)
 
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+## Front End App
+- The sample Front end App using ReactJS can be found here: [https://github.com/talal7860/forum-react-app] (Forum React App)
