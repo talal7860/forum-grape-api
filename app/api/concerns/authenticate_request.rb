@@ -24,6 +24,10 @@ module AuthenticateRequest
         raise unauthenticated_error! unless current_user && (current_user.admin? || current_user.moderator?(topic.forum_id) || current_user.owner?(topic))
       end
 
+      def authenticate_post_owner!(post)
+        raise unauthenticated_error! unless (current_user && (current_user.admin? || current_user.moderator?(post.topic.forum_id) || current_user.owner?(post)))
+      end
+
       def unauthenticated_error!
         error!({meta: {code: RESPONSE_CODE[:unauthorized], message: I18n.t("errors.not_authenticated"), debug_info: ''}}, RESPONSE_CODE[:unauthorized])
       end
