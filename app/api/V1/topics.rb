@@ -57,8 +57,11 @@ module V1
             requires :description, type: String, desc: 'Topic Description'
           end
           post do
-            authenticate_admin!
-            topic = Topic.new(topic_params)
+            authenticate!
+            get_forum params[:forum_id]
+            custom_params = topic_params
+            custom_params.merge!({forum_id: @forum.id})
+            topic = current_user.topics.new(custom_params)
             if topic.save
               serialization = TopicSerializer.new(topic)
               render_success(serialization.as_json)
