@@ -2,7 +2,7 @@ require 'factory_bot'
 namespace :forum_api do
   desc "TODO"
   task create_dummy_data: :environment do
-    User.Transaction do
+    User.transaction do
       user = FactoryBot::create(:user)
       user.add_role(:admin);
       puts 'admin created'
@@ -11,7 +11,7 @@ namespace :forum_api do
       puts 'forums created'
 
       forums.each do |forum|
-        FactoryBot::create_list(:topic, 20, forum: forum)
+        FactoryBot::create_list(:topic, 50, forum: forum)
       end
       puts 'topics created'
     end

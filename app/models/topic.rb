@@ -14,13 +14,14 @@ class Topic < ApplicationRecord
   def search_data
     {
       title: title,
-      description: description
+      description: description,
+      forum_id: forum_id
     }
   end
 
   def self.query(q, page, per_page, forum_id)
     self.search(q, fields: ['title', 'description'], page: page, per_page: per_page, where: {
-      forum_id: [forum_id]
+      forum_id: forum_id
     })
   end
 end
