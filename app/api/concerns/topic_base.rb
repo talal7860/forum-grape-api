@@ -3,8 +3,8 @@ module TopicBase
   included do
     helpers do
 
-      def get_topic(id)
-        @topic = Topic.find_by_id(id)
+      def get_topic(slug)
+        @topic = Topic.find_by_slug(slug)
 
         unless @topic
           raise ApiException.new(
