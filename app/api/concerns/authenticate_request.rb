@@ -11,20 +11,9 @@ module AuthenticateRequest
         @current_user ||= User.by_auth_token(request.headers['Authorization'])
       end
       # Authenticate request with token of user
-      def authenticate_customer!
-        raise unauthenticated_error! unless current_user && current_user.customer?
-      end
-
-      def authenticate_support_representative!
-        raise unauthenticated_error! unless current_user && current_user.support_representative?
-      end
-
+      #
       def authenticate_admin!
         raise unauthenticated_error! unless current_user && current_user.admin?
-      end
-
-      def authenticate_admin_and_customer!
-        raise unauthenticated_error! unless current_user && %w(Admin Customer).include?(current_user.type)
       end
 
       def authenticate!

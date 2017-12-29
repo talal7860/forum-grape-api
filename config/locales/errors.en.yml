@@ -10,12 +10,12 @@ en:
     user:
       not_found: "User can not be found"
       is_invalid: "User is invalid"
-    supportrepresentative:
-      not_found: "Support Representative can not be found"
-      is_invalid: "Support Representative is invalid"
-      invalid_token: "Inviation Token is invalid"
-    ticket:
+    forum:
+      not_found: "Forum can not be found"
+      is_invalid: "Forum is invalid"
+    topic:
       not_found: "Ticket can not be found"
+      is_invalid: "Topic is invalid"
     session:
       invalid: "Invalid email or password"
       invalid_token: "Invalid access token"

@@ -64,3 +64,4 @@ gem 'kaminari'
 gem 'dotenv-rails'
 gem 'simplecov', require: false, group: :test
 gem "rolify"
+gem 'searchkick'
