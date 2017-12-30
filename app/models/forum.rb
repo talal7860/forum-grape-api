@@ -4,6 +4,10 @@ class Forum < ApplicationRecord
   has_many :topics, dependent: :destroy
   after_create :create_slug
 
+  def add_moderator(user)
+    user.add_role :moderator, self
+  end
+
   private
 
   def create_slug

@@ -48,7 +48,7 @@ module V1
       end
       post do
         authenticate_admin!
-        forum = Forum.new(forum_params)
+        forum = current_user.forums.new(forum_params)
         if forum.save
           serialization = ForumSerializer.new(forum)
           render_success(serialization.as_json)
@@ -72,9 +72,9 @@ module V1
         requires :title, type: String, desc: 'Forum Title'
         requires :description, type: String, desc: 'Forum Description'
       end
-      put ':id' do
+      put ':slug' do
         authenticate_admin!
-        get_forum params[:id]
+        get_forum params[:slug]
         if @forum.update(forum_params)
           serialization = ForumSerializer.new(@forum)
           render_success(serialization.as_json)
@@ -91,13 +91,11 @@ module V1
         headers: HEADERS_DOCS,
         http_codes: [
           { code: 200, message: 'success' },
-          { code: RESPONSE_CODE[:forbidden], message: I18n.t('errors.forbidden') },
           { code: RESPONSE_CODE[:not_found], message: I18n.t('errors.not_found') }
         ]
       }
-      get ':id' do
-        authenticate_admin!
-        get_forum params[:id]
+      get ':slug' do
+        get_forum params[:slug]
         serialization = ForumSerializer.new(@forum)
         render_success(serialization.as_json)
       end
@@ -111,12 +109,40 @@ module V1
           { code: RESPONSE_CODE[:not_found], message: I18n.t('errors.not_found') }
         ]
       }
-      delete ':id' do
+      delete ':slug' do
         authenticate_admin!
-        get_forum params[:id]
+        get_forum params[:slug]
         @forum.destroy
         render_success({ deleted: true })
       end
+
+      desc 'Assign a moderator', {
+        consumes: [ "application/x-www-form-urlencoded" ],
+        headers: HEADERS_DOCS,
+        http_codes: [
+          { code: 200, message: 'success' },
+          { code: RESPONSE_CODE[:unprocessable_entity], message: 'Detail error messages' },
+          { code: RESPONSE_CODE[:forbidden], message: I18n.t('errors.forbidden') },
+          { code: RESPONSE_CODE[:not_found], message: I18n.t('errors.not_found') }
+        ]
+      }
+      params do
+        requires :user_id, type: Integer, desc: 'Moderator ID'
+      end
+      post ':slug/add-moderator' do
+        authenticate_admin!
+        can_add_moderator! params[:slug], params[:user_id]
+        if @forum.add_moderator(@user)
+          serialization = ForumSerializer.new(@forum)
+          render_success(serialization.as_json)
+        else
+          error = forum.errors.full_messages.join(', ')
+          render_error(RESPONSE_CODE[:unprocessable_entity], error)
+          return
+        end
+      end
+
+
     end
   end
 end
