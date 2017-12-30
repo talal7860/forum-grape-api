@@ -13,6 +13,7 @@ en:
     forum:
       not_found: "Forum can not be found"
       is_invalid: "Forum is invalid"
+      self_moderator: "forum cannot be self assigned a moderator"
     topic:
       not_found: "Ticket can not be found"
       is_invalid: "Topic is invalid"

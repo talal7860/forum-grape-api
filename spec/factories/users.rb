@@ -7,5 +7,10 @@ FactoryBot.define do
     phone_number { Faker::PhoneNumber.cell_phone }
     password 'password'
     password_confirmation 'password'
+    factory :admin do
+      after(:create) do |user|
+        user.add_role :admin
+      end
+    end
   end
 end
