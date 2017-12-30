@@ -54,8 +54,8 @@ module V1
       post do
         user = User.new(user_params)
         if user.save
-          user.login!
-          serialization = UserSerializer.new(user, { show_token: true, token: user.token })
+          u_token = user.login!
+          serialization = UserSerializer.new(user, { show_token: true, token: u_token.token })
           render_success(serialization.as_json)
         else
           error = user.errors.full_messages.join(', ')
