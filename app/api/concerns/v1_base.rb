@@ -25,9 +25,6 @@ module V1Base
     end
 
     helpers do
-      def logger
-        Rails.logger
-      end
 
       def render_error(code, message, debug_info = '')
         error!({ meta: { code: code, message: message, debug_info: debug_info } }, code)

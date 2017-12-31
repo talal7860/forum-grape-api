@@ -54,15 +54,10 @@ module V1
       post do
         can_create_user?
         user = User.new(user_params)
-        if user.save
-          u_token = user.login!
-          serialization = UserSerializer.new(user, { show_token: true, token: u_token.token })
-          render_success(serialization.as_json)
-        else
-          error = user.errors.full_messages.join(', ')
-          render_error(RESPONSE_CODE[:unprocessable_entity], error)
-          return
-        end
+        user.save
+        u_token = user.login!
+        serialization = UserSerializer.new(user, { show_token: true, token: u_token.token })
+        render_success(serialization.as_json)
       end
 
       desc 'Update user', {
@@ -86,14 +81,9 @@ module V1
         authenticate_admin!
         get_user(params[:id])
         can_update_user?(params[:id])
-        if @user.update(user_params)
-          serialization = UserSerializer.new(@user)
-          render_success(serialization.as_json)
-        else
-          error = user.errors.full_messages.join(', ')
-          render_error(RESPONSE_CODE[:unprocessable_entity], error)
-          return
-        end
+        @user.update(user_params)
+        serialization = UserSerializer.new(@user)
+        render_success(serialization.as_json)
       end
 
 
