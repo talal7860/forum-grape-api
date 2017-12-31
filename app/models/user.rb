@@ -32,10 +32,6 @@ class User < ApplicationRecord
     self.user_tokens.create
   end
 
-  def poster?
-    self.has_role? :poster
-  end
-
   def admin?
     self.has_role? :admin
   end

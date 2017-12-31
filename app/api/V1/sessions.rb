@@ -21,15 +21,9 @@ module V1
         email = params[:email]
         password = params[:password]
 
-        if email.nil? or password.nil?
-          render_error(RESPONSE_CODE[:unauthorized], I18n.t('errors.session.invalid'))
-          return
-        end
-
         user = User.where(email: email.downcase).first
         if user.nil? || !user.valid_password?(password)
           render_error(RESPONSE_CODE[:unauthorized], I18n.t('errors.session.invalid'))
-          return
         end
 
         u_token = user.login!
@@ -48,13 +42,9 @@ module V1
         auth_token = headers['Authorization']
         user_token = UserToken.where(token: auth_token).first
 
-        if user_token.nil?
-          render_error(RESPONSE_CODE[:unauthorized], I18n.t('errors.session.invalid_token'))
-          return
-        else
-          user_token.destroy
-          render_success({})
-        end
+        user_token.destroy
+        render_success({})
+
       end
     end
   end

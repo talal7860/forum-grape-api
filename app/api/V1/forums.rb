@@ -49,14 +49,9 @@ module V1
       post do
         authenticate_admin!
         forum = current_user.forums.new(forum_params)
-        if forum.save
-          serialization = ForumSerializer.new(forum)
-          render_success(serialization.as_json)
-        else
-          error = forum.errors.full_messages.join(', ')
-          render_error(RESPONSE_CODE[:unprocessable_entity], error)
-          return
-        end
+        forum.save
+        serialization = ForumSerializer.new(forum)
+        render_success(serialization.as_json)
       end
 
       desc 'Update forum', {
@@ -69,22 +64,16 @@ module V1
         ]
       }
       params do
-        requires :title, type: String, desc: 'Forum Title'
-        requires :description, type: String, desc: 'Forum Description'
+        optional :title, type: String, desc: 'Forum Title'
+        optional :description, type: String, desc: 'Forum Description'
       end
       put ':slug' do
         authenticate_admin!
         get_forum params[:slug]
-        if @forum.update(forum_params)
-          serialization = ForumSerializer.new(@forum)
-          render_success(serialization.as_json)
-        else
-          error = forum.errors.full_messages.join(', ')
-          render_error(RESPONSE_CODE[:unprocessable_entity], error)
-          return
-        end
+        @forum.update(forum_params)
+        serialization = ForumSerializer.new(@forum)
+        render_success(serialization.as_json)
       end
-
 
       desc 'Get forum', {
         consumes: [ "application/x-www-form-urlencoded" ],
@@ -132,14 +121,9 @@ module V1
       post ':slug/add-moderator' do
         authenticate_admin!
         can_add_moderator! params[:slug], params[:user_id]
-        if @forum.add_moderator(@user)
-          serialization = ForumSerializer.new(@forum)
-          render_success(serialization.as_json)
-        else
-          error = forum.errors.full_messages.join(', ')
-          render_error(RESPONSE_CODE[:unprocessable_entity], error)
-          return
-        end
+        @forum.add_moderator(@user)
+        serialization = ForumSerializer.new(@forum)
+        render_success(serialization.as_json)
       end
 
 

@@ -17,7 +17,6 @@ module V1Base
     version 'v1', using: :header, vendor: API_VENDOR
 
     rescue_from ActiveRecord::RecordNotFound do |e|
-      status 404
       render_error(RESPONSE_CODE[:not_found], I18n.t("errors.#{e.model.to_s.downcase}.not_found"))
     end
 
@@ -26,9 +25,6 @@ module V1Base
     end
 
     helpers do
-      def logger
-        Rails.logger
-      end
 
       def render_error(code, message, debug_info = '')
         error!({ meta: { code: code, message: message, debug_info: debug_info } }, code)

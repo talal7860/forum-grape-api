@@ -29,7 +29,7 @@ module V1
         authenticate_admin!
         page = (params[:page] || 1).to_i
         per_page = (params[:per_page] || PER_PAGE).to_i
-        users = User.all.order("status, created_at DESC").page(page).per(per_page)
+        users = User.all.order("created_at DESC").page(page).per(per_page)
         serialization = ActiveModel::Serializer::CollectionSerializer.new(users, each_serializer: UserSerializer)
         render_success(serialization.as_json , pagination_dict(users))
       end
@@ -52,16 +52,12 @@ module V1
         requires :password_confirmation, type: String, desc: 'Password Confirmation'
       end
       post do
+        can_create_user?
         user = User.new(user_params)
-        if user.save
-          u_token = user.login!
-          serialization = UserSerializer.new(user, { show_token: true, token: u_token.token })
-          render_success(serialization.as_json)
-        else
-          error = user.errors.full_messages.join(', ')
-          render_error(RESPONSE_CODE[:unprocessable_entity], error)
-          return
-        end
+        user.save
+        u_token = user.login!
+        serialization = UserSerializer.new(user, { show_token: true, token: u_token.token })
+        render_success(serialization.as_json)
       end
 
       desc 'Update user', {
@@ -74,24 +70,20 @@ module V1
         ]
       }
       params do
-        requires :email, type: String, desc: 'Email'
-        requires :first_name, type: String, desc: 'First Name'
-        requires :last_name, type: String, desc: 'Last Name'
+        optional :email, type: String, desc: 'Email'
+        optional :first_name, type: String, desc: 'First Name'
+        optional :last_name, type: String, desc: 'Last Name'
         optional :phone_number, type: String, desc: 'Phone Number'
-        requires :password, type: String, desc: 'Password'
-        requires :password_confirmation, type: String, desc: 'Password Confirmation'
+        optional :password, type: String, desc: 'Password'
+        optional :password_confirmation, type: String, desc: 'Password Confirmation'
       end
       put ':id' do
         authenticate_admin!
-        get_user params[:id]
-        if @user.update(user_params)
-          serialization = UserSerializer.new(@user)
-          render_success(serialization.as_json)
-        else
-          error = user.errors.full_messages.join(', ')
-          render_error(RESPONSE_CODE[:unprocessable_entity], error)
-          return
-        end
+        get_user(params[:id])
+        can_update_user?(params[:id])
+        @user.update(user_params)
+        serialization = UserSerializer.new(@user)
+        render_success(serialization.as_json)
       end
 
 
@@ -129,4 +121,3 @@ module V1
     end
   end
 end
-

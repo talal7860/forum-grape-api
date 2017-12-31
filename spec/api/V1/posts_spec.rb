@@ -8,6 +8,7 @@ describe ApplicationApi::V1::Posts do
   end
 
   before(:context) do
+    header 'Content-Type', 'application/json'
   end
 
   context :user do
@@ -15,7 +16,6 @@ describe ApplicationApi::V1::Posts do
       let (:authenticate!) do
         user = FactoryBot.create(:user)
         user.login!
-        header 'Content-Type', 'application/json'
         header 'Authorization', user.user_tokens.first.token
       end
 
@@ -74,7 +74,7 @@ describe ApplicationApi::V1::Posts do
         topic = FactoryBot::create(:topic)
         post "/api/forums/#{topic.forum.slug}/topics/#{topic.slug}/posts", post_instance.to_json
 
-        expect(last_response.status).to eq(400)
+        expect(last_response.status).to eq(401)
       end
 
       it 'does not deletes a post' do
@@ -110,7 +110,6 @@ describe ApplicationApi::V1::Posts do
       let (:authenticate!) do
         user = FactoryBot.create(:user)
         user.login!
-        header 'Content-Type', 'application/json'
         header 'Authorization', user.user_tokens.first.token
       end
       let (:post_instance) do
@@ -122,7 +121,7 @@ describe ApplicationApi::V1::Posts do
         post_instance = FactoryBot::create(:post)
         put "/api/forums/#{post_instance.topic.forum.slug}/topics/#{post_instance.topic.slug}/posts/#{post_instance.id}", post_instance.to_json
 
-        expect(last_response.status).to eq(401)
+        expect(last_response.status).to eq(403)
       end
 
       it 'cannot delete a post not owned' do
@@ -130,7 +129,7 @@ describe ApplicationApi::V1::Posts do
         post_instance = FactoryBot::create(:post)
         delete "/api/forums/#{post_instance.topic.forum.slug}/topics/#{post_instance.topic.slug}/posts/#{post_instance.id}"
 
-        expect(last_response.status).to eq(401)
+        expect(last_response.status).to eq(403)
       end
 
     end
@@ -142,7 +141,6 @@ describe ApplicationApi::V1::Posts do
         admin = FactoryBot.create(:user)
         admin.add_role(:admin)
         admin.login!
-        header 'Content-Type', 'application/json'
         header 'Authorization', admin.user_tokens.first.token
       end
       let (:post_instance) do
