@@ -26,7 +26,7 @@ module UserBase
       end
 
       def can_update_user?(id)
-        unless current_user.id.to_s == params[:id]
+        unless current_user.admin? || current_user.id.to_s == params[:id]
           raise ApiException.new(
             http_status: RESPONSE_CODE[:forbidden],
             code: RESPONSE_CODE[:forbidden],

@@ -8,6 +8,7 @@ describe ApplicationApi::V1::Topics do
   end
 
   before(:context) do
+    header 'Content-Type', 'application/json'
   end
 
   context :user do
@@ -15,7 +16,6 @@ describe ApplicationApi::V1::Topics do
       let (:authenticate!) do
         user = FactoryBot.create(:user)
         user.login!
-        header 'Content-Type', 'application/json'
         header 'Authorization', user.user_tokens.first.token
       end
 
@@ -74,7 +74,7 @@ describe ApplicationApi::V1::Topics do
         forum = FactoryBot::create(:forum)
         post "/api/forums/#{forum.slug}/topics", topic.to_json
 
-        expect(last_response.status).to eq(400)
+        expect(last_response.status).to eq(401)
       end
 
       it 'does not deletes a topic' do
@@ -122,7 +122,7 @@ describe ApplicationApi::V1::Topics do
         topic = FactoryBot::create(:topic)
         put "/api/forums/#{topic.forum.slug}/topics/#{topic.slug}", topic.to_json
 
-        expect(last_response.status).to eq(401)
+        expect(last_response.status).to eq(403)
       end
 
       it 'cannot delete a topic not owned' do
@@ -130,7 +130,7 @@ describe ApplicationApi::V1::Topics do
         topic = FactoryBot::create(:topic)
         delete "/api/forums/#{topic.forum.slug}/topics/#{topic.slug}"
 
-        expect(last_response.status).to eq(401)
+        expect(last_response.status).to eq(403)
       end
 
     end
@@ -142,7 +142,6 @@ describe ApplicationApi::V1::Topics do
         admin = FactoryBot.create(:user)
         admin.add_role(:admin)
         admin.login!
-        header 'Content-Type', 'application/json'
         header 'Authorization', admin.user_tokens.first.token
       end
       let (:topic) do

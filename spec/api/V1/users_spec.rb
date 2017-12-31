@@ -8,6 +8,7 @@ describe ApplicationApi::V1::Users do
   end
 
   before(:context) do
+    header 'Content-Type', 'application/json'
   end
 
   context :user do
@@ -16,7 +17,6 @@ describe ApplicationApi::V1::Users do
       let (:authenticate!) do
         user = FactoryBot.create(:user)
         user.login!
-        header 'Content-Type', 'application/json'
         header 'Authorization', user.user_tokens.first.token
       end
 
@@ -55,11 +55,12 @@ describe ApplicationApi::V1::Users do
 
     end
     describe 'Un Authenticated Request' do
+
       let (:user) do
         FactoryBot::attributes_for(:user)
       end
+
       let (:add_headers) do
-        header 'Content-Type', 'application/json'
       end
 
       it 'can signup' do
@@ -101,7 +102,6 @@ describe ApplicationApi::V1::Users do
       let (:authenticate!) do
         admin = FactoryBot.create(:admin)
         admin.login!
-        header 'Content-Type', 'application/json'
         header 'Authorization', admin.user_tokens.first.token
       end
       let (:user) do
@@ -113,6 +113,15 @@ describe ApplicationApi::V1::Users do
         post '/api/users', user.to_json
 
         expect(last_response.status).to eq(201)
+      end
+
+      it 'can update any user' do
+        authenticate!
+        user = FactoryBot::create(:user)
+        user.first_name = 'Yo Yo YO'
+        put "/api/users/#{user.id}", user.to_json
+
+        expect(last_response.status).to eq(200)
       end
 
       it 'can delete any user' do
@@ -138,6 +147,12 @@ describe ApplicationApi::V1::Users do
         get "/api/users/#{user.id}"
         expect(last_response.status).to eq(200)
         expect(JSON.parse(last_response.body)['data']['id']).to eq(user.id)
+      end
+
+      it 'cannot get details of a an invalid user id' do
+        authenticate!
+        get "/api/users/199"
+        expect(last_response.status).to eq(404)
       end
 
     end

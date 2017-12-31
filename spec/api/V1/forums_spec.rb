@@ -8,14 +8,14 @@ describe ApplicationApi::V1::Forums do
   end
 
   before(:context) do
+    header 'Content-Type', 'application/json'
   end
 
-  context :user do
+  context :admin do
     describe 'Authenticated Request' do
       let (:authenticate!) do
         user = FactoryBot.create(:admin)
         user.login!
-        header 'Content-Type', 'application/json'
         header 'Authorization', user.user_tokens.first.token
       end
       let (:forum) do
@@ -28,6 +28,22 @@ describe ApplicationApi::V1::Forums do
         expect(last_response.status).to eq(201)
         expect(JSON.parse(last_response.body)['data']['title']).to eq(forum.title)
       end
+
+      it 'updates a forum' do
+        authenticate!
+        forum = FactoryBot::create(:forum)
+        put "/api/forums/#{forum.slug}", { title: 'updated title' }.to_json
+        expect(last_response.status).to eq(200)
+        expect(JSON.parse(last_response.body)['data']['title']).to eq('updated title')
+      end
+
+      it 'creates a forum' do
+        authenticate!
+        post '/api/forums', forum.to_json
+        expect(last_response.status).to eq(201)
+        expect(JSON.parse(last_response.body)['data']['title']).to eq(forum.title)
+      end
+
 
       it 'deletes a forum' do
         authenticate!
@@ -56,6 +72,7 @@ describe ApplicationApi::V1::Forums do
 
     end
     describe 'Un Authenticated Request' do
+
       let (:forum) do
         FactoryBot::build(:forum)
       end
@@ -63,7 +80,7 @@ describe ApplicationApi::V1::Forums do
       it 'does not create a forum' do
         post '/api/forums', forum.to_json
 
-        expect(last_response.status).to eq(400)
+        expect(last_response.status).to eq(401)
       end
 
       it 'does not delete a forum' do
@@ -95,7 +112,6 @@ describe ApplicationApi::V1::Forums do
       let (:authenticate!) do
         user = FactoryBot.create(:user)
         user.login!
-        header 'Content-Type', 'application/json'
         header 'Authorization', user.user_tokens.first.token
       end
       let (:forum) do
@@ -106,7 +122,7 @@ describe ApplicationApi::V1::Forums do
         authenticate!
         post '/api/forums', forum.to_json
 
-        expect(last_response.status).to eq(401)
+        expect(last_response.status).to eq(403)
       end
 
       it 'cannot delete a forum' do
@@ -115,7 +131,7 @@ describe ApplicationApi::V1::Forums do
         forum.save!
         delete "/api/forums/#{forum.slug}"
 
-        expect(last_response.status).to eq(401)
+        expect(last_response.status).to eq(403)
       end
     end
   end
@@ -125,7 +141,6 @@ describe ApplicationApi::V1::Forums do
       let (:authenticate!) do
         admin = FactoryBot.create(:admin)
         admin.login!
-        header 'Content-Type', 'application/json'
         header 'Authorization', admin.user_tokens.first.token
       end
       let (:forum) do

@@ -17,7 +17,6 @@ module V1Base
     version 'v1', using: :header, vendor: API_VENDOR
 
     rescue_from ActiveRecord::RecordNotFound do |e|
-      status 404
       render_error(RESPONSE_CODE[:not_found], I18n.t("errors.#{e.model.to_s.downcase}.not_found"))
     end
 

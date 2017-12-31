@@ -75,16 +75,17 @@ module V1
         ]
       }
       params do
-        requires :email, type: String, desc: 'Email'
-        requires :first_name, type: String, desc: 'First Name'
-        requires :last_name, type: String, desc: 'Last Name'
+        optional :email, type: String, desc: 'Email'
+        optional :first_name, type: String, desc: 'First Name'
+        optional :last_name, type: String, desc: 'Last Name'
         optional :phone_number, type: String, desc: 'Phone Number'
-        requires :password, type: String, desc: 'Password'
-        requires :password_confirmation, type: String, desc: 'Password Confirmation'
+        optional :password, type: String, desc: 'Password'
+        optional :password_confirmation, type: String, desc: 'Password Confirmation'
       end
       put ':id' do
         authenticate_admin!
-        get_user params[:id]
+        get_user(params[:id])
+        can_update_user?(params[:id])
         if @user.update(user_params)
           serialization = UserSerializer.new(@user)
           render_success(serialization.as_json)
