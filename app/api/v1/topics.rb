@@ -37,10 +37,9 @@ module V1
               topics = Topic.query(q, page, per_page, @forum.id)#.order("created_at DESC")
               data = topics.results
             else
-              topics = @forum.topics.page(page).per(per_page)
-              data = topics
+              topics = data = @forum.topics.page(page).per(per_page)
             end
-            serialization = ActiveModel::Serializer::CollectionSerializer.new(data, each_serializer: TopicSerializer)
+            serialization = ActiveModel::Serializer::CollectionSerializer.new(data, each_serializer: TopicSerializer, includes: [:posts])
             render_success(serialization.as_json , pagination_dict(topics))
           end
 
