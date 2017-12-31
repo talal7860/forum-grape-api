@@ -29,7 +29,7 @@ module V1
         authenticate_admin!
         page = (params[:page] || 1).to_i
         per_page = (params[:per_page] || PER_PAGE).to_i
-        users = User.all.order("status, created_at DESC").page(page).per(per_page)
+        users = User.all.order("created_at DESC").page(page).per(per_page)
         serialization = ActiveModel::Serializer::CollectionSerializer.new(users, each_serializer: UserSerializer)
         render_success(serialization.as_json , pagination_dict(users))
       end
@@ -52,6 +52,7 @@ module V1
         requires :password_confirmation, type: String, desc: 'Password Confirmation'
       end
       post do
+        can_create_user?
         user = User.new(user_params)
         if user.save
           u_token = user.login!
@@ -129,4 +130,3 @@ module V1
     end
   end
 end
-

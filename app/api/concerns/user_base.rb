@@ -15,6 +15,16 @@ module UserBase
         end
       end
 
+      def can_create_user?
+        if current_user.present? && !current_user.admin?
+          raise ApiException.new(
+            http_status: RESPONSE_CODE[:forbidden],
+            code: RESPONSE_CODE[:forbidden],
+            message: I18n.t('errors.forbidden')
+          )
+        end
+      end
+
       def can_update_user?(id)
         unless current_user.id.to_s == params[:id]
           raise ApiException.new(
