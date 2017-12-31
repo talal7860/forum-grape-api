@@ -37,7 +37,6 @@ describe ApplicationApi::V1::Sessions do
 
     it 'deletes a valid session' do
       user.login!
-      puts user.user_tokens.first.token
       header 'Content-Type', 'application/json'
       header 'Authorization', user.user_tokens.first.token
       delete '/api/sessions'
