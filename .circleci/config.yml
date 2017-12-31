@@ -19,6 +19,7 @@ jobs:
            POSTGRES_USER: postgres
            POSTGRES_DB: forum_api_test
            POSTGRES_PASSWORD: ""
+       - image: circleci/docker-elasticsearch
 
     working_directory: ~/repo
 
