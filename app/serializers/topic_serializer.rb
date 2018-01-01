@@ -1,8 +1,13 @@
-class TopicSerializer < ActiveModel::Serializer
-  attributes :id, :title, :description, :slug, :forum_id, :created_at, :posts_count, :views
+class TopicSerializer < BaseSerializer
+  attributes :id, :title, :description, :slug, :forum_id, :created_at, :posts_count, :views, :created_at_i
+  belongs_to :added_by
 
   def created_at
     object.created_at.to_s(:posted_time)
+  end
+
+  def created_at_i
+    object.created_at.to_i
   end
 
   def posts_count
