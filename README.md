@@ -1,5 +1,7 @@
 [![CircleCI](https://circleci.com/gh/talal7860/forum-grape-api.svg?style=svg)](https://circleci.com/gh/talal7860/forum-grape-api)
 [![Build Status](https://travis-ci.org/talal7860/forum-grape-api.svg?branch=develop)](https://travis-ci.org/talal7860/forum-grape-api)
+[![Coverage Status](https://coveralls.io/repos/github/talal7860/forum-grape-api/badge.svg?branch=develop)](https://coveralls.io/github/talal7860/forum-grape-api?branch=develop)
+
 # Forum Api in Rails + Grape
 
 This rails app is an example of rest api built using [Grape](https://github.com/ruby-grape/grape)
