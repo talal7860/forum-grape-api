@@ -80,6 +80,10 @@ ActiveRecord::Schema.define(version: 20171225154407) do
     t.string "first_name"
     t.string "last_name"
     t.string "phone_number"
+    t.string "avatar_file_name"
+    t.string "avatar_content_type"
+    t.integer "avatar_file_size"
+    t.datetime "avatar_updated_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["email"], name: "index_users_on_email", unique: true

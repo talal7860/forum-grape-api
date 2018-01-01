@@ -64,5 +64,7 @@ gem 'kaminari'
 # Utilities
 gem 'dotenv-rails'
 gem 'simplecov', require: false, group: :test
-gem "rolify"
+gem 'rolify'
 gem 'searchkick'
+gem 'paperclip'
+gem 'coveralls', require: false
