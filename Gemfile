@@ -67,3 +67,4 @@ gem 'simplecov', require: false, group: :test
 gem 'rolify'
 gem 'searchkick'
 gem 'paperclip'
+gem 'coveralls', require: false
