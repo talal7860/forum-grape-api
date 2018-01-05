@@ -21,7 +21,7 @@ describe ApplicationApi::V1::Users do
       end
 
       let (:user) do
-        FactoryBot::attributes_for(:user, avatar: Faker::Avatar.image)
+        FactoryBot.attributes_for(:user, avatar: Faker::Avatar.image)
       end
 
       it 'cannot create a user' do
@@ -40,7 +40,7 @@ describe ApplicationApi::V1::Users do
 
       it 'cannot get all users' do
         authenticate!
-        FactoryBot::create_list(:user, 5)
+        FactoryBot.create_list(:user, 5)
         get '/api/users/all'
 
         expect(last_response.status).to eq(403)
@@ -57,7 +57,7 @@ describe ApplicationApi::V1::Users do
     describe 'Un Authenticated Request' do
 
       let (:user) do
-        FactoryBot::attributes_for(:user, avatar: Faker::Avatar.image)
+        FactoryBot.attributes_for(:user, avatar: Faker::Avatar.image)
       end
 
       let (:add_headers) do
@@ -80,7 +80,7 @@ describe ApplicationApi::V1::Users do
 
       it 'cannot get all user' do
         add_headers
-        FactoryBot::create_list(:user, 5)
+        FactoryBot.create_list(:user, 5)
         get '/api/users/all'
 
         expect(last_response.status).to eq(401)
@@ -105,7 +105,7 @@ describe ApplicationApi::V1::Users do
         header 'Authorization', admin.user_tokens.first.token
       end
       let (:user) do
-        FactoryBot::attributes_for(:user, avatar: Faker::Avatar.image)
+        FactoryBot.attributes_for(:user, avatar: Faker::Avatar.image)
       end
 
       it 'can creates a user' do
@@ -117,7 +117,7 @@ describe ApplicationApi::V1::Users do
 
       it 'can update any user' do
         authenticate!
-        user = FactoryBot::create(:user)
+        user = FactoryBot.create(:user)
         user.first_name = 'Yo Yo YO'
         put "/api/users/#{user.id}", user.to_json
 
@@ -134,7 +134,7 @@ describe ApplicationApi::V1::Users do
 
       it 'gets all users' do
         authenticate!
-        FactoryBot::create_list(:user, 5)
+        FactoryBot.create_list(:user, 5)
         get '/api/users/all'
 
         expect(last_response.status).to eq(200)

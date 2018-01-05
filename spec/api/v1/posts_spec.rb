@@ -20,11 +20,11 @@ describe ApplicationApi::V1::Posts do
       end
 
       let (:topic) do
-        FactoryBot::build(:topic)
+        FactoryBot.build(:topic)
       end
 
       let (:post_instance) do
-        FactoryBot::build(:post, added_by: nil)
+        FactoryBot.build(:post, added_by: nil)
       end
 
       it 'creates a post' do
@@ -47,8 +47,8 @@ describe ApplicationApi::V1::Posts do
       it 'gets all tickets for a topic' do
         authenticate!
         topic.save!
-        FactoryBot::create_list(:post, 5)
-        FactoryBot::create_list(:post, 5, added_by: User.first, topic: topic)
+        FactoryBot.create_list(:post, 5)
+        FactoryBot.create_list(:post, 5, added_by: User.first, topic: topic)
         get "/api/forums/#{topic.forum.slug}/topics/#{topic.slug}/posts/all"
 
         expect(last_response.status).to eq(200)
@@ -67,11 +67,11 @@ describe ApplicationApi::V1::Posts do
     end
     describe 'Un Authenticated Request' do
       let (:post_instance) do
-        FactoryBot::build(:post, added_by: nil)
+        FactoryBot.build(:post, added_by: nil)
       end
 
       it 'does not creates a post' do
-        topic = FactoryBot::create(:topic)
+        topic = FactoryBot.create(:topic)
         post "/api/forums/#{topic.forum.slug}/topics/#{topic.slug}/posts", post_instance.to_json
 
         expect(last_response.status).to eq(401)
@@ -87,7 +87,7 @@ describe ApplicationApi::V1::Posts do
       end
 
       it 'gets all posts' do
-        FactoryBot::create_list(:post, 5)
+        FactoryBot.create_list(:post, 5)
         get "/api/forums/#{post_instance.topic.forum.slug}/topics/#{post_instance.topic.slug}/posts/all"
 
         expect(last_response.status).to eq(200)
@@ -113,12 +113,12 @@ describe ApplicationApi::V1::Posts do
         header 'Authorization', user.user_tokens.first.token
       end
       let (:post_instance) do
-        FactoryBot::build(:post, added_by: nil)
+        FactoryBot.build(:post, added_by: nil)
       end
 
       it 'cannot update a post not owned' do
         authenticate!
-        post_instance = FactoryBot::create(:post)
+        post_instance = FactoryBot.create(:post)
         put "/api/forums/#{post_instance.topic.forum.slug}/topics/#{post_instance.topic.slug}/posts/#{post_instance.id}", post_instance.to_json
 
         expect(last_response.status).to eq(403)
@@ -126,7 +126,7 @@ describe ApplicationApi::V1::Posts do
 
       it 'cannot delete a post not owned' do
         authenticate!
-        post_instance = FactoryBot::create(:post)
+        post_instance = FactoryBot.create(:post)
         delete "/api/forums/#{post_instance.topic.forum.slug}/topics/#{post_instance.topic.slug}/posts/#{post_instance.id}"
 
         expect(last_response.status).to eq(403)
@@ -144,12 +144,12 @@ describe ApplicationApi::V1::Posts do
         header 'Authorization', admin.user_tokens.first.token
       end
       let (:post_instance) do
-        FactoryBot::build(:post)
+        FactoryBot.build(:post)
       end
 
       it 'cant update a post not owned' do
         authenticate!
-        post_instance = FactoryBot::create(:post)
+        post_instance = FactoryBot.create(:post)
         put "/api/forums/#{post_instance.topic.forum.slug}/topics/#{post_instance.topic.slug}/posts/#{post_instance.id}", post_instance.to_json
 
         expect(last_response.status).to eq(200)
@@ -157,7 +157,7 @@ describe ApplicationApi::V1::Posts do
 
       it 'can delete a post not owned' do
         authenticate!
-        post_instance = FactoryBot::create(:post)
+        post_instance = FactoryBot.create(:post)
         delete "/api/forums/#{post_instance.topic.forum.slug}/topics/#{post_instance.topic.slug}/posts/#{post_instance.id}"
 
         expect(last_response.status).to eq(200)

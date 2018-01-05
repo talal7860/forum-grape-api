@@ -20,11 +20,11 @@ describe ApplicationApi::V1::Topics do
       end
 
       let (:forum) do
-        FactoryBot::build(:forum)
+        FactoryBot.build(:forum)
       end
 
       let (:topic) do
-        FactoryBot::build(:topic, added_by: nil)
+        FactoryBot.build(:topic, added_by: nil)
       end
 
       it 'creates a topic' do
@@ -47,8 +47,8 @@ describe ApplicationApi::V1::Topics do
       it 'gets all tickets for a forum' do
         authenticate!
         forum.save!
-        FactoryBot::create_list(:topic, 5)
-        FactoryBot::create_list(:topic, 5, added_by: User.first, forum: forum)
+        FactoryBot.create_list(:topic, 5)
+        FactoryBot.create_list(:topic, 5, added_by: User.first, forum: forum)
         get "/api/forums/#{forum.slug}/topics/all"
 
         expect(last_response.status).to eq(200)
@@ -67,11 +67,11 @@ describe ApplicationApi::V1::Topics do
     end
     describe 'Un Authenticated Request' do
       let (:topic) do
-        FactoryBot::build(:topic, added_by: nil)
+        FactoryBot.build(:topic, added_by: nil)
       end
 
       it 'does not creates a topic' do
-        forum = FactoryBot::create(:forum)
+        forum = FactoryBot.create(:forum)
         post "/api/forums/#{forum.slug}/topics", topic.to_json
 
         expect(last_response.status).to eq(401)
@@ -87,7 +87,7 @@ describe ApplicationApi::V1::Topics do
       end
 
       it 'gets all topics' do
-        FactoryBot::create_list(:topic, 5)
+        FactoryBot.create_list(:topic, 5)
         get "/api/forums/#{topic.forum.slug}/topics/all"
 
         expect(last_response.status).to eq(200)
@@ -114,12 +114,12 @@ describe ApplicationApi::V1::Topics do
         header 'Authorization', user.user_tokens.first.token
       end
       let (:topic) do
-        FactoryBot::build(:topic, added_by: nil)
+        FactoryBot.build(:topic, added_by: nil)
       end
 
       it 'cannot update a topic not owned' do
         authenticate!
-        topic = FactoryBot::create(:topic)
+        topic = FactoryBot.create(:topic)
         put "/api/forums/#{topic.forum.slug}/topics/#{topic.slug}", topic.to_json
 
         expect(last_response.status).to eq(403)
@@ -127,7 +127,7 @@ describe ApplicationApi::V1::Topics do
 
       it 'cannot delete a topic not owned' do
         authenticate!
-        topic = FactoryBot::create(:topic)
+        topic = FactoryBot.create(:topic)
         delete "/api/forums/#{topic.forum.slug}/topics/#{topic.slug}"
 
         expect(last_response.status).to eq(403)
@@ -145,12 +145,12 @@ describe ApplicationApi::V1::Topics do
         header 'Authorization', admin.user_tokens.first.token
       end
       let (:topic) do
-        FactoryBot::build(:topic)
+        FactoryBot.build(:topic)
       end
 
       it 'cant update a topic not owned' do
         authenticate!
-        topic = FactoryBot::create(:topic)
+        topic = FactoryBot.create(:topic)
         put "/api/forums/#{topic.forum.slug}/topics/#{topic.slug}", topic.to_json
 
         expect(last_response.status).to eq(200)
@@ -158,7 +158,7 @@ describe ApplicationApi::V1::Topics do
 
       it 'can delete a topic not owned' do
         authenticate!
-        topic = FactoryBot::create(:topic)
+        topic = FactoryBot.create(:topic)
         delete "/api/forums/#{topic.forum.slug}/topics/#{topic.slug}"
 
         expect(last_response.status).to eq(200)

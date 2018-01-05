@@ -8,7 +8,7 @@ module V1
 
     helpers do
       def user_params
-        params.select{|key,value| VALID_PARAMS.include?(key.to_s)}
+        params.select{|key| VALID_PARAMS.include?(key.to_s)}
       end
     end
 

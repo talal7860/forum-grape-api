@@ -19,7 +19,7 @@ describe ApplicationApi::V1::Forums do
         header 'Authorization', user.user_tokens.first.token
       end
       let (:forum) do
-        FactoryBot::build(:forum)
+        FactoryBot.build(:forum)
       end
 
       it 'creates a forum' do
@@ -31,7 +31,7 @@ describe ApplicationApi::V1::Forums do
 
       it 'updates a forum' do
         authenticate!
-        forum = FactoryBot::create(:forum)
+        forum = FactoryBot.create(:forum)
         put "/api/forums/#{forum.slug}", { title: 'updated title' }.to_json
         expect(last_response.status).to eq(200)
         expect(JSON.parse(last_response.body)['data']['title']).to eq('updated title')
@@ -55,7 +55,7 @@ describe ApplicationApi::V1::Forums do
 
       it 'gets all forums' do
         authenticate!
-        FactoryBot::create_list(:forum, 5)
+        FactoryBot.create_list(:forum, 5)
         get '/api/forums/all'
 
         expect(last_response.status).to eq(200)
@@ -74,7 +74,7 @@ describe ApplicationApi::V1::Forums do
     describe 'Un Authenticated Request' do
 
       let (:forum) do
-        FactoryBot::build(:forum)
+        FactoryBot.build(:forum)
       end
 
       it 'does not create a forum' do
@@ -91,7 +91,7 @@ describe ApplicationApi::V1::Forums do
       end
 
       it 'gets all forum' do
-        FactoryBot::create_list(:forum, 5)
+        FactoryBot.create_list(:forum, 5)
         get '/api/forums/all'
 
         expect(last_response.status).to eq(200)
@@ -115,7 +115,7 @@ describe ApplicationApi::V1::Forums do
         header 'Authorization', user.user_tokens.first.token
       end
       let (:forum) do
-        FactoryBot::build(:forum, added_by: nil)
+        FactoryBot.build(:forum, added_by: nil)
       end
 
       it 'does not create a forum' do
@@ -144,7 +144,7 @@ describe ApplicationApi::V1::Forums do
         header 'Authorization', admin.user_tokens.first.token
       end
       let (:forum) do
-        FactoryBot::build(:forum)
+        FactoryBot.build(:forum)
       end
 
       it 'can creates a forum against any user' do
@@ -165,7 +165,7 @@ describe ApplicationApi::V1::Forums do
 
       it 'gets all forums' do
         authenticate!
-        FactoryBot::create_list(:forum, 5)
+        FactoryBot.create_list(:forum, 5)
         get '/api/forums/all'
 
         expect(last_response.status).to eq(200)
@@ -183,7 +183,7 @@ describe ApplicationApi::V1::Forums do
       it 'can assign a moderator to a forum' do
         authenticate!
         forum = FactoryBot.create(:forum, added_by: User.first)
-        post "/api/forums/#{forum.slug}/add-moderator", { user_id: FactoryBot::create(:user).id }.to_json
+        post "/api/forums/#{forum.slug}/add-moderator", { user_id: FactoryBot.create(:user).id }.to_json
         expect(last_response.status).to eq(201)
       end
 
