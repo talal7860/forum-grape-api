@@ -11,7 +11,8 @@ class TopicSerializer < BaseSerializer
   end
 
   def posts_count
-    object.posts.count
+    #converting to array to make use of includes and avoid n+1 queries
+    object.posts.to_a.count
   end
 
   def views

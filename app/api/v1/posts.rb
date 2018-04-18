@@ -37,10 +37,10 @@ module V1
                 per_page = (params[:per_page] || PER_PAGE).to_i
                 q = params[:q] || ""
                 if q.present?
-                  posts = Post.query(q, page, per_page, @forum.id)#.order("created_at DESC")
+                  posts = Post.include_added_by.query(q, page, per_page, @forum.id)#.order("created_at DESC")
                   data = posts.results
                 else
-                  posts = @topic.posts.page(page).per(per_page)
+                  posts = @topic.posts.include_added_by.page(page).per(per_page)
                   data = posts
                 end
                 serialization = ActiveModel::Serializer::CollectionSerializer.new(data, each_serializer: PostSerializer)

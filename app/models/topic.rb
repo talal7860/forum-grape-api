@@ -3,6 +3,7 @@ class Topic < ApplicationRecord
   belongs_to :added_by, class_name: 'User', foreign_key: :added_by_id
   has_many :posts
   after_create :create_slug
+  scope :include_added_by_and_posts, -> { includes(:added_by, :posts) }
   searchkick
 
   private

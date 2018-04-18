@@ -34,10 +34,10 @@ module V1
             per_page = (params[:per_page] || PER_PAGE).to_i
             q = params[:q] || ""
             if q.present?
-              topics = Topic.query(q, page, per_page, @forum.id)#.order("created_at DESC")
+              topics = Topic.include_added_by_and_posts.query(q, page, per_page, @forum.id)#.order("created_at DESC")
               data = topics.results
             else
-              topics = data = @forum.topics.page(page).per(per_page)
+              topics = data = @forum.topics.include_added_by_and_posts.page(page).per(per_page)
             end
             serialization = ActiveModel::Serializer::CollectionSerializer.new(data, each_serializer: TopicSerializer, includes: [:posts])
             render_success(serialization.as_json , pagination_dict(topics))

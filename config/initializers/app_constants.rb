@@ -16,4 +16,4 @@ RESPONSE_CODE = {
 # Request header
 
 # items per page
-PER_PAGE = 20
+PER_PAGE = 10
