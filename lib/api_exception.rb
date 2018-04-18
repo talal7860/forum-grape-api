@@ -25,4 +25,3 @@ class ApiException < StandardError
     end
   end
 end
-
