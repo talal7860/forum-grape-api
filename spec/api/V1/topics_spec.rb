@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe ApplicationApi::V1::Topics do
+describe V1::Topics do
   include Rack::Test::Methods
 
   def app

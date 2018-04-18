@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe ApplicationApi::V1::Forums do
+describe V1::Forums do
   include Rack::Test::Methods
 
   def app

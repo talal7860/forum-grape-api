@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe ApplicationApi::V1::Sessions do
+describe V1::Sessions do
   include Rack::Test::Methods
 
   def app

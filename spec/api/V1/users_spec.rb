@@ -1,6 +1,7 @@
 require 'rails_helper'
+require 'open-uri'
 
-describe ApplicationApi::V1::Users do
+describe V1::Users do
   include Rack::Test::Methods
 
   def app
@@ -21,7 +22,7 @@ describe ApplicationApi::V1::Users do
       end
 
       let (:user) do
-        FactoryBot.attributes_for(:user, avatar: Faker::Avatar.image)
+        FactoryBot.attributes_for(:user, avatar: open(Faker::Avatar.image))
       end
 
       it 'cannot create a user' do
@@ -57,7 +58,7 @@ describe ApplicationApi::V1::Users do
     describe 'Un Authenticated Request' do
 
       let (:user) do
-        FactoryBot.attributes_for(:user, avatar: Faker::Avatar.image)
+        FactoryBot.attributes_for(:user, avatar: open(Faker::Avatar.image))
       end
 
       let (:add_headers) do
@@ -105,7 +106,7 @@ describe ApplicationApi::V1::Users do
         header 'Authorization', admin.user_tokens.first.token
       end
       let (:user) do
-        FactoryBot.attributes_for(:user, avatar: Faker::Avatar.image)
+        FactoryBot.attributes_for(:user, avatar: open(Faker::Avatar.image))
       end
 
       it 'can creates a user' do
