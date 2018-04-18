@@ -1,0 +1,26 @@
+postgres:
+  image: postgres:9.6
+  environment:
+    POSTGRES_USER: postgres
+    POSTGRES_PASSWORD:
+  ports:
+    - '5432:5432'
+  volumes:
+    - drkiq-postgres:/var/lib/postgresql/data
+
+elasticsearch:
+  image: docker.elastic.co/elasticsearch/elasticsearch:6.2.4
+  volumes:
+    - drkiq-elasticsearch:/var/lib/elasticsearch/data
+
+forum_api:
+  build: .
+  links:
+    - postgres
+    - elasticsearch
+  volumes:
+    - .:/forum_api
+  ports:
+    - '8000:8000'
+  env_file:
+    - .forum_api.env
