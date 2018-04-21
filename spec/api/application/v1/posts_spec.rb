@@ -1,10 +1,10 @@
 require 'rails_helper'
 
-describe V1::Posts do
+describe Application::V1::Posts do
   include Rack::Test::Methods
 
   def app
-    ApplicationApi
+    Application::Api
   end
 
   before(:context) do

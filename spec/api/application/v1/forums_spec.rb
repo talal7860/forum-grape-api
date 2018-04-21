@@ -1,10 +1,10 @@
 require 'rails_helper'
 
-describe V1::Forums do
+describe Application::V1::Forums do
   include Rack::Test::Methods
 
   def app
-    ApplicationApi
+    Application::Api
   end
 
   before(:context) do
@@ -13,7 +13,7 @@ describe V1::Forums do
 
   context :admin do
     describe 'Authenticated Request' do
-      let (:authenticate!) do
+      let(:authenticate!) do
         user = FactoryBot.create(:admin)
         user.login!
         header 'Authorization', user.user_tokens.first.token

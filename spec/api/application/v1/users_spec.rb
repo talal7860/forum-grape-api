@@ -1,11 +1,11 @@
 require 'rails_helper'
 require 'open-uri'
 
-describe V1::Users do
+describe Application::V1::Users do
   include Rack::Test::Methods
 
   def app
-    ApplicationApi
+    Application::Api
   end
 
   before(:context) do

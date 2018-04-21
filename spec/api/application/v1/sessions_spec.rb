@@ -1,10 +1,10 @@
 require 'rails_helper'
 
-describe V1::Sessions do
+describe Application::V1::Sessions do
   include Rack::Test::Methods
 
   def app
-    ApplicationApi
+    Application::Api
   end
 
   describe 'POST /api/sessions' do
