@@ -173,7 +173,7 @@ GEM
       terrapin (~> 0.6.0)
     pg (0.21.0)
     puma (3.11.4)
-    rack (2.0.4)
+    rack (2.2.2)
     rack-accept (0.4.5)
       rack (>= 0.4)
     rack-cors (1.0.2)
